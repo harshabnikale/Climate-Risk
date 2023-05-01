@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 
-function LineGraph({ markerData, category }: any) {
+function LineGraph({ markerData, category, width }: any) {
 
     const [filteredData, setFilteredData] = useState<any>(null)
     const [options, setOptions] = useState<any>(null)
@@ -106,7 +106,7 @@ function LineGraph({ markerData, category }: any) {
                 </select>
             </div>
             <div className='my-8'>
-                <LineChart width={1500} height={300} data={filteredData}>
+                <LineChart width={width} height={500} data={filteredData}>
                     <XAxis dataKey="year" />
                     <YAxis dataKey="risk" />
                     <CartesianGrid stroke="#ccc" />

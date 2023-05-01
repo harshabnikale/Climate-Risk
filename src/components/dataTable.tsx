@@ -11,6 +11,9 @@ function Datatable({ markerData }: any) {
     //filter data
     const [searchName, setBusinessCategory] = useState("");
     const [searchAge, setRiskRating] = useState("");
+    //pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 10; // Number of rows to display per page
 
     useEffect(() => {
         setData(markerData);
@@ -80,6 +83,24 @@ function Datatable({ markerData }: any) {
     };
     console.log(filteredData[0]);
 
+    //Pagination start
+    // Calculate the starting and ending indexes of the rows to display based on the current page number and the number of rows per page
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+
+    // Get the rows for the current page
+    const rows = filteredData.slice(startIndex, endIndex);
+
+    // Handle pagination controls
+    const handlePrevPage = () => {
+        setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    };
+    //Pagination end
+
 
     return (
         <div className='m-8'>
@@ -114,42 +135,58 @@ function Datatable({ markerData }: any) {
                 </div>
             </div>
             <div className='overflow-visible h-40'>
-            <table id="climate-risk-table" className='border-2 border-gray-300' >
-                <thead>
-                    {filteredData.length ? (
-                        <tr className='border-2 border-gray-300 px-2 py-1'>
-                            {Object.keys(filteredData[0]).map((value) => (
-                                value != 'Location' ? (
-                                    <th className='border-2 border-gray-300' onClick={handleSort} data-column={value} key={value}>{value}</th>
-                                ) : ''
-                            ))}
-                        </tr>
-                    ) : (
-                        <tr>
-                            <th className='font-medium text-lg'>Please wait</th>
-                        </tr>
-                    )}
-                </thead>
-                <tbody>
-                    {filteredData?.length ? (
-                        filteredData.map((item: any, index: number) => (
-                            <tr className='border-2 border-gray-300 px-2 py-1' key={index}>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Asset_Name}</td>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Lat}</td>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Long}</td>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Business_Category}</td>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Risk_Rating}</td>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Risk_Factors}</td>
-                                <td className='border-2 border-gray-300 px-2 py-1'>{item.Year}</td>
+                <table id="climate-risk-table" className='border-2 border-gray-300' >
+                    <thead>
+                        {filteredData.length ? (
+                            <tr className='border-2 border-gray-300 px-2 py-1'>
+                                {Object.keys(filteredData[0]).map((value) => (
+                                    value != 'Location' ? (
+                                        <th className='border-2 border-gray-300' onClick={handleSort} data-column={value} key={value}>{value}</th>
+                                    ) : ''
+                                ))}
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td className='font-medium text-sm px-3 mx-5'>No data found.</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            <tr>
+                                <th className='font-medium text-lg'>Please wait</th>
+                            </tr>
+                        )}
+                    </thead>
+                    <tbody>
+                        {rows?.length ? (
+                            rows.map((item: any, index: number) => (
+                                // <tr className='border-2 border-gray-300 px-2 py-1' key={index}>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Asset_Name}</td>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Lat}</td>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Long}</td>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Business_Category}</td>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Risk_Rating}</td>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Risk_Factors}</td>
+                                //     <td className='border-2 border-gray-300 px-2 py-1'>{item.Year}</td>
+                                // </tr>
+                                //  rows.map(item => (
+                                <tr className='border-2 border-gray-300 px-2 py-1' key={index}>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Asset_Name}</td>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Lat}</td>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Long}</td>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Business_Category}</td>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Risk_Rating}</td>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Risk_Factors}</td>
+                                    <td className='border-2 border-gray-300 px-2 py-1'>{item.Year}</td>
+                                </tr>
+                                //   ))
+                            ))
+                        ) : (
+                            <tr>
+                                <td className='font-medium text-sm px-3 mx-5'>No data found.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+                <div className='mt-2 py-5 text-center'>
+                    <button className='p-2 underline' onClick={handlePrevPage}>Previous</button>
+                    <span className='m-3 px-5 py-2 rounded-lg border-gray-800 border-2 w-30 border-radius bg-slate-100'>{currentPage}</span>
+                    <button className='p-2 underline' onClick={handleNextPage}>Next</button>
+                </div>
             </div>
         </div>
     );

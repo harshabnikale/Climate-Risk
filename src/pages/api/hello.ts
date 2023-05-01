@@ -6,7 +6,7 @@ import csvParser from 'csv-parser';
 function getServerSideProps() {
   return new Promise((resolve, reject) => {
     const results: any = [];
-    fs.createReadStream('./public/sample_data.csv')
+    fs.createReadStream('./public/static/sample_data.csv')
       .pipe(csvParser())
       .on('data', (data: any) => {
         results.push(data);

@@ -3,6 +3,7 @@ import LineGraph from "../../components/lineGraph";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Datatable from "@/components/dataTable";
+import { APIROUTES } from "../../constants/apiRoutes";
 
 export default function Problem4() {
   const [data, setData] = useState<any>([]);
@@ -13,7 +14,7 @@ export default function Problem4() {
 
 
   const GET_DATA = async () => {
-    await axios.get('http://localhost:3000/api/hello').then((response: any) => {
+    await axios.get(APIROUTES.GET_DATA_FROM_CSV).then((response : any) => {
       // console.log(response.data);
       setData(response.data);
       setNewData(response.data);
@@ -76,9 +77,13 @@ export default function Problem4() {
     <div>
       {data.length ? (
         <div>
-          <MapComponent markerData={newdata} callback={getCurrentLoc} height={'60vh'} width={'100vh'} />
-          <LineGraph markerData={newdata} category={cat} />
-          <Datatable markerData={newdata} />
+          <div className="flex">
+            <MapComponent markerData={newdata} callback={getCurrentLoc} height={'60vh'} width={'100vh'} />
+            <LineGraph markerData={newdata} category={cat} width={700} />
+          </div>
+          <div>
+            <Datatable markerData={newdata} />
+          </div>
         </div>
       ) : ''}
 

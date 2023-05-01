@@ -3,12 +3,13 @@ import LineGraph from "../../components/lineGraph";
 import csvParser from 'csv-parser';
 import * as fs from'fs';
 import { useEffect, useState } from "react";
+import { APIROUTES } from "../../constants/apiRoutes";
 
 export default function Problem3() {
   const[data,setData] = useState<any>([]);
 
   const GET_DATA = async() => {
-    await axios.get('http://localhost:3000/api/hello').then((response : any) => {
+    await axios.get(APIROUTES.GET_DATA_FROM_CSV).then((response : any) => {
       console.log(response.data);
       setData(response.data)})
   }
@@ -24,7 +25,7 @@ export default function Problem3() {
   return (
     <div>
   {data.length ? (
-      <LineGraph  markerData={data} />
+      <LineGraph  markerData={data} width={1500} />
    ) : ''}
     </div>
   )
