@@ -30,9 +30,8 @@ export default async function handler(
  let data: any = await getServerSideProps(file);
 console.log(data);
 
-//  data.forEach((element: any) => {
-//   Object.assign(element, { Location: element.Lat + ',' + element.Long, });
-//   // a.push({location: element.Lat +','+ element.Long,})
-// });
-  res.status(200).json([data.data]);
+ data.data.forEach((element: any) => {
+  Object.assign(element, { Location: element.Lat + ',' + element.Long, });
+});
+  res.status(200).json(data.data);
 }
