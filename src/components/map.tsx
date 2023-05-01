@@ -9,7 +9,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style.js';
 
-function MapComponent({ markerData , callback = null, height , width }: any) {
+function MapComponent({ markerData , callback, height , width }: any) {
   const mapRef = useRef(null);
   const [file, setFile] = useState<any>(null);
   const [data, setData] = useState([]);  //storing data parsed from CSV file
@@ -78,6 +78,7 @@ function MapComponent({ markerData , callback = null, height , width }: any) {
 
   useEffect(() => {
     if (mapRef.current) {
+      
       const map = new Map({
         target: mapRef.current,
         layers: [
@@ -120,43 +121,8 @@ function MapComponent({ markerData , callback = null, height , width }: any) {
         }),
       });
 
-      //   var zoom = new Control.click};
-      // map.addControl(zoom);
-      // map.on('click', function (evt: any) {
-      //   console.log('jijo')
-      //   // console.log(evt.target.getGeometry().getCoordinates(),'jijo')
-      //   // console.log(evt.feature.getGeometry().getCoordinates(), 'coordinates!');
-      //   // const feature: any = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-      //   //   return feature;
-      //   // });
-      //   // // disposePopover();
-      //   // if (!feature) {
-      //   //   // return;
-      //   // }
-      //   // console.log(feature, 'feature!');
 
-      // })
-
-      // display popup on click
-      // var popupContainerElement:any = document.getElementById('popup-coordinates');
-      
-      // var popup = new Overlay({
-      //   popupContainerElement: popupContainerElement,
-      //   positioning: 'top-right'
-      // })
-
-      // map.addOverlay(popup);
-      // const element: any = document.getElementById('popup');
-
-      // const popup = new Overlay({
-      //   element: element,
-      //   positioning: 'bottom-center',
-      //   stopEvent: false,
-      // });
-      // map.addOverlay(popup);
-
-
-      // get coordinates on click
+        // get coordinates on click
       map.on('click', function (evt) {
         const feature: any = map.getFeaturesAtPixel(evt.pixel)[0];
         if (feature) {
@@ -167,7 +133,8 @@ function MapComponent({ markerData , callback = null, height , width }: any) {
           callback(coordinate)
         }
       });
-
+      let layerExtent = markers.getSource().getExtent();
+      map.getView().fit(layerExtent);
       // change mouse cursor when over marker
       map.on('pointermove', function (e) {
         const pixel = map.getEventPixel(e.originalEvent);

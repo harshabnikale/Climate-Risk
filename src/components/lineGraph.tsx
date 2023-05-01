@@ -77,7 +77,7 @@ function LineGraph({ markerData, category, width }: any) {
         console.log(columnNames, 'Sorted values');
         console.log(columnNameOptions, 'columnNameOptions');
 
-        filterDataBasedOnYear({ target: { value: secondFilter[0] } })
+        filterDataBasedOnYear(secondFilter[0])
     }, [markerData,category])
 
     useEffect(() => {

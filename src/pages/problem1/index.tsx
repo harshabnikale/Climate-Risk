@@ -13,13 +13,16 @@ export default function Problem1() {
       console.log(response.data);
       setData(response.data)})
   }
+  function dummyFunction () {
+    return 
+  }
   useEffect(()=> {
     GET_DATA();
   }, [])
   return (
     <div>
   {data.length ? (
-      <MapComponent  markerData={data}  height={'85vh'}  width={''}/>
+      <MapComponent  markerData={data}  height={'85vh'}  width={''} callback={dummyFunction}/>
    ) : ''}
     </div>
     
