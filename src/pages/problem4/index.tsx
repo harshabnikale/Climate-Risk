@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Datatable from "@/components/dataTable";
 
-export default function problem4() {
+export default function Problem4() {
   const [data, setData] = useState<any>([]);
   const [newdata, setNewData] = useState<any>([]); //creating a copy or orginial data to filter
   const [clickedmarker, setClickedMarker] = useState("")

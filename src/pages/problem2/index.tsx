@@ -4,7 +4,7 @@ import Datatable from "../../components/dataTable";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function problem2() {
+export default function Problem2() {
 
   const[data,setData] = useState<any>([]);
 

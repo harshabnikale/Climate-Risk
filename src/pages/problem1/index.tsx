@@ -3,7 +3,7 @@ import MapComponent from "../../components/map";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function problem1() {
+export default function Problem1() {
   
   const[data,setData] = useState<any>([]);
 

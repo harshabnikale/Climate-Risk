@@ -12,7 +12,6 @@ function getServerSideProps() {
         results.push(data);
       })
       .on('end', () => {
-        // console.log(results,'results resolve')
         resolve({ data: results });
       })
       .on('error', (err: any) => {
@@ -28,7 +27,6 @@ export default async function handler(
   //  //load and parse data
  let data: any = await getServerSideProps();
  data.data.forEach((element: any) => {
-  console.log(element, 'element')
   Object.assign(element, { Location: element.Lat + ',' + element.Long, });
   // a.push({location: element.Lat +','+ element.Long,})
 });

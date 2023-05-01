@@ -172,7 +172,8 @@ function MapComponent({ markerData , callback = null, height , width }: any) {
       map.on('pointermove', function (e) {
         const pixel = map.getEventPixel(e.originalEvent);
         const hit = map.hasFeatureAtPixel(pixel);
-        map.getTarget().style.cursor = hit ? 'pointer' : '';
+        const a:any = map.getTarget();
+        a.style.cursor = hit ? 'pointer' : 'cursor';
       });
 
 
@@ -198,7 +199,7 @@ function MapComponent({ markerData , callback = null, height , width }: any) {
 
 
       return () => {
-        map.setTarget(null);
+        map.setTarget(undefined);
       };
     }
   }, [filteredData]);

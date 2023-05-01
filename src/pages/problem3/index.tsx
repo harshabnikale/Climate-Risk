@@ -4,7 +4,7 @@ import csvParser from 'csv-parser';
 import * as fs from'fs';
 import { useEffect, useState } from "react";
 
-export default function problem3() {
+export default function Problem3() {
   const[data,setData] = useState<any>([]);
 
   const GET_DATA = async() => {
