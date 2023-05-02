@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Datatable from "@/components/dataTable";
 import { APIROUTES } from "../../constants/apiRoutes";
+import { Navbar } from "@/components/navbar";
 
 export default function Problem4() {
   const [data, setData] = useState<any>([]);
@@ -57,19 +58,23 @@ export default function Problem4() {
 
   return (
     <div>
-      {data.length ? (
-        <div>
-          <div className="flex">
-            <MapComponent markerData={mapdata} callback={getCurrentLoc} height={'60vh'} width={'100vh'} />
-            <LineGraph markerData={newdata} category={cat} width={700} />
-          </div>
+      <Navbar activeClass={4}/>
+      <div>
+        {data.length ? (
           <div>
-            <Datatable markerData={newdata} />
+            <div className="flex">
+              <MapComponent markerData={mapdata} callback={getCurrentLoc} height={'60vh'} width={'100vh'} />
+              <LineGraph markerData={newdata} category={cat} width={700} />
+            </div>
+            <div>
+              <Datatable markerData={newdata} />
+            </div>
           </div>
-        </div>
-      ) : ''}
+        ) : ''}
 
+      </div>
     </div>
+
 
   )
 } 

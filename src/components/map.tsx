@@ -9,21 +9,22 @@ import VectorLayer from 'ol/layer/Vector';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style.js';
 
-function MapComponent({ markerData , callback, height , width }: any) {
+function MapComponent({ markerData, callback, height, width }: any) {
   const mapRef = useRef(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+
   const [file, setFile] = useState<any>(null);
   const [data, setData] = useState([]);  //storing data parsed from CSV file
   const [filteredData, setFilteredData] = useState([]); //storing filtered data based on user selects value in the dropdown
   const [options, setOptions] = useState([]); //setting options to dropdwon
-  const [currentMarkers, setCurrentMarkers] = useState<any>(null);
-
+  const [clickedCoordinates, setClickedCoordinates] = useState<any>(null)
 
   //adding style to markers
   const markerStyle1 = new Style({
     image: new Circle({
-      radius: 9,
+      radius: 10,
       fill: new Fill({
-        color: 'orange',
+        color: '#3a7d44',
       }),
       stroke: new Stroke({
         color: 'white',
@@ -33,9 +34,9 @@ function MapComponent({ markerData , callback, height , width }: any) {
   });
   const markerStyle2 = new Style({
     image: new Circle({
-      radius: 9,
+      radius: 10,
       fill: new Fill({
-        color: 'red',
+        color: '#b8b42d',
       }),
       stroke: new Stroke({
         color: 'white',
@@ -45,9 +46,9 @@ function MapComponent({ markerData , callback, height , width }: any) {
   });
   const markerStyle3 = new Style({
     image: new Circle({
-      radius: 9,
+      radius: 10,
       fill: new Fill({
-        color: 'pink',
+        color: '#59114d',
       }),
       stroke: new Stroke({
         color: 'white',
@@ -57,9 +58,9 @@ function MapComponent({ markerData , callback, height , width }: any) {
   });
   const markerStyle4 = new Style({
     image: new Circle({
-      radius: 9,
+      radius: 10,
       fill: new Fill({
-        color: 'purple',
+        color: '#726953',
       }),
       stroke: new Stroke({
         color: 'white',
@@ -78,7 +79,7 @@ function MapComponent({ markerData , callback, height , width }: any) {
 
   useEffect(() => {
     if (mapRef.current) {
-      
+
       const map = new Map({
         target: mapRef.current,
         layers: [
@@ -100,9 +101,7 @@ function MapComponent({ markerData , callback, height , width }: any) {
             const feature = new Feature({
               geometry: new Point(fromLonLat([marker.Long, marker.Lat])),
               name: marker.Asset_Name,
-              // overlay: 'hi'
             });
-            // console.log(marker.Long, marker.Lat, 'latlong');
             if (marker.Risk_Rating <= 0.25) {
               feature.setStyle(markerStyle1);
             } else if (marker.Risk_Rating >= 0.25 && marker.Risk_Rating <= 0.5) {
@@ -114,22 +113,35 @@ function MapComponent({ markerData , callback, height , width }: any) {
             else {
               feature.setStyle(markerStyle4);
             }
-
             return feature;
           }),
         }),
       });
+      // Popup showing the position the user clicked - overlay
+      if (popupRef.current) {
+        var popup: any = new Overlay({
+          element: popupRef.current,
+          positioning: 'top-left',
+          offset: [10, 10]
+        });
+      }
+      map.addOverlay(popup);
 
 
-        // get coordinates on click
+      // get coordinates on click
       map.on('click', function (evt) {
+        console.log(evt,'mapon')
         const feature: any = map.getFeaturesAtPixel(evt.pixel)[0];
         if (feature) {
           const out = feature.getGeometry().getCoordinates();
           // console.log('out', out);
-          const coordinate = toLonLat(out);
+          const coordinate :any = toLonLat(out);
           console.log('coordinate:', coordinate);
-          callback(coordinate)
+          callback(coordinate);
+          setClickedCoordinates(`${coordinate[1].toFixed(4)}, ${coordinate[0].toFixed(4)}`);
+
+          popup.setPosition(out);
+  
         }
       });
       let layerExtent = markers.getSource().getExtent();
@@ -141,29 +153,7 @@ function MapComponent({ markerData , callback, height , width }: any) {
         const a:any = map.getTarget();
         a.style.cursor = hit ? 'pointer' : 'cursor';
       });
-
-
-
-
       map.addLayer(markers)
-
-
-      // const overlayContainer = document.createElement('div');
-      // overlayContainer.id = 'myOverlay';
-      // overlayContainer.innerHTML = 'This is my overlay';
-      // overlayContainer.style.position= 'absolute';
-      // overlayContainer.style.zIndex='999'
-
-      // const overlay = new Overlay({
-      //   element: overlayContainer,
-      //   positioning: 'bottom-center',
-      //   offset: [0, -20]
-      // });
-
-      // map.addOverlay(overlay);
-
-
-
       return () => {
         map.setTarget(undefined);
       };
@@ -177,7 +167,7 @@ function MapComponent({ markerData , callback, height , width }: any) {
     setFile(e.target.files[0]);
   };
 
-  
+
 
   //filter data based on user selection from dropdown
   const filterDataBasedOnYear = (event: any) => {
@@ -188,6 +178,10 @@ function MapComponent({ markerData , callback, height , width }: any) {
 
   return (
     <div>
+      <div style={{ display: 'none' }}>
+        <div id="popup" ref={popupRef} className='border-2 p-2 border-gray-900 bg-slate-100 rounded-md'>{clickedCoordinates}</div>
+      </div>
+
       {data?.length ? (
         <div className='m-5'>
           <div className='font-medium text-lg'>Select a decade year:</div>
