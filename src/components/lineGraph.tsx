@@ -62,17 +62,13 @@ function LineGraph({ markerData, category, width }: any) {
         columnNames.indexOf('Long') !== -1 && columnNames.splice(columnNames.indexOf('Long'), 1)
         columnNames.indexOf('Risk_Rating') !== -1 && columnNames.splice(columnNames.indexOf('Risk_Rating'), 1)
         columnNames.indexOf('Risk_Factors') !== -1 && columnNames.splice(columnNames.indexOf('Risk_Factors'), 1)
-        columnNames.indexOf('Year') !== -1 && columnNames.splice(columnNames.indexOf('Year'), 1)
-        if(category){
-            columnNames.unshift("Location");
-            columnNames.pop()
-        }
-
+        columnNames.indexOf('Year') !== -1 && columnNames.splice(columnNames.indexOf('Year'), 1)  
         setcolumnNameOptions(columnNames) 
-        let secondFilter = filterOptions(columnNames[0])
-        console.log(columnNames, 'Sorted values');
-        console.log(columnNameOptions, 'columnNameOptions');
-
+        if(category){
+            var secondFilter = filterOptions('Location');
+        }else {
+            var secondFilter = filterOptions(columnNames[0]);
+        }
         filterDataBasedOnYear(secondFilter[0])
     }, [markerData])
 
@@ -88,14 +84,14 @@ function LineGraph({ markerData, category, width }: any) {
             <div className='ml-16'>
                 <select className='border-2 border-gray-600 px-5 py-1 w-50' onChange={filterOptions}>
                     {columnNameOptions?.map((value: any) => (
-                        <option key={value} value={value}>
+                        <option key={value} value={value} selected={value == currentColumn ? true : false}>
                             {value}
                         </option>
                     ))}
                 </select>
                 <select className='border-2 border-gray-600 px-5 py-1 w-50 ml-10' onChange={filterDataBasedOnYear}>
                     {options?.map((value: any) => (
-                        <option key={value} value={value}>
+                        <option key={value} value={value} >
                             {value}
                         </option>
                     ))}
