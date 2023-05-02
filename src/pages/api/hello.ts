@@ -31,7 +31,12 @@ export default async function handler(
 console.log(data);
 
  data.data.forEach((element: any) => {
-  Object.assign(element, { Location: element.Lat + ',' + element.Long, });
+  //applying toFixed to maintain consistency in data
+  const newLat = parseFloat(element.Lat).toFixed(4);
+  element.Lat = newLat;
+  const newLong = parseFloat(element.Long).toFixed(4);
+  element.Long = newLong;
+  Object.assign(element, { Location: element.Lat + ',' + element.Long});
 });
   res.status(200).json(data.data);
 }

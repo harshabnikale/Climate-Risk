@@ -103,13 +103,12 @@ function MapComponent({ markerData , callback, height , width }: any) {
               // overlay: 'hi'
             });
             // console.log(marker.Long, marker.Lat, 'latlong');
-
-            if (marker.Risk_Factors <= 0.25) {
+            if (marker.Risk_Rating <= 0.25) {
               feature.setStyle(markerStyle1);
-            } else if (marker.Risk_Factors >= 0.25 && marker.Risk_Factors <= 0.5) {
+            } else if (marker.Risk_Rating >= 0.25 && marker.Risk_Rating <= 0.5) {
               feature.setStyle(markerStyle2);
             }
-            else if (marker.Risk_Factors >= 0.5 && marker.Risk_Factors <= 0.75) {
+            else if (marker.Risk_Rating >= 0.5 && marker.Risk_Rating <= 0.75) {
               feature.setStyle(markerStyle3);
             }
             else {

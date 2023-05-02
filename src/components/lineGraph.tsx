@@ -53,16 +53,12 @@ function LineGraph({ markerData, category, width }: any) {
     };
 
     useEffect(() => {
-        let a: any = []
         markerData.forEach((element: any) => {
-            console.log(element, 'element')
             Object.assign(element, { Location: element.Lat + ',' + element.Long, });
             // a.push({location: element.Lat +','+ element.Long,})
         });
-        console.log(a, 'location');
         const columnNames: any = Object.keys(markerData[0]);
-        for (let i = 0; i < 4; i++)
-            columnNames.indexOf('Lat') !== -1 && columnNames.splice(columnNames.indexOf('Lat'), 1)
+        columnNames.indexOf('Lat') !== -1 && columnNames.splice(columnNames.indexOf('Lat'), 1)
         columnNames.indexOf('Long') !== -1 && columnNames.splice(columnNames.indexOf('Long'), 1)
         columnNames.indexOf('Risk_Rating') !== -1 && columnNames.splice(columnNames.indexOf('Risk_Rating'), 1)
         columnNames.indexOf('Risk_Factors') !== -1 && columnNames.splice(columnNames.indexOf('Risk_Factors'), 1)
@@ -78,7 +74,7 @@ function LineGraph({ markerData, category, width }: any) {
         console.log(columnNameOptions, 'columnNameOptions');
 
         filterDataBasedOnYear(secondFilter[0])
-    }, [markerData,category])
+    }, [markerData])
 
     useEffect(() => {
         if (options?.length) {
