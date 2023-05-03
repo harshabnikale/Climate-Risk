@@ -6,7 +6,7 @@ export default  function Home() {
 
   return (
     <div className='m-5 p-6 rounded-xl border-inherit border-2'>
-      <div className='text-xl py-3 text-current text-gray-600/100 font-medium'>
+      <div className='text-xl py-3 text-gray-600/100 font-medium'>
         Click on the below problem statement to navigate to the solution:
       </div>
       <div className='ml-6 py-2 hover:text-blue-600'>
